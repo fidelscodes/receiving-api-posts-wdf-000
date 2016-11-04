@@ -19,7 +19,13 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.create(post_params)
-    redirect_to post_path(@post)
+  
+  # We are specifying the status: 201 for this request, rather
+  # than the standard 200, which means OK. Technically, this is a
+  # successful request and could be considered 200, but we want to
+  # specify what happened more granularly, and 201 means that the resource
+  # was created.
+    render json: @post, status: 201
   end
 
   def edit
@@ -37,7 +43,7 @@ class PostsController < ApplicationController
                               include: [author: { only: [:name]}])
   end
 
-private
+  private
   # Use callbacks to share common setup or constraints between actions.
   def set_post
     @post = Post.find(params[:id])
